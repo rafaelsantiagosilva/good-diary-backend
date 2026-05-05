@@ -1,6 +1,7 @@
 import { ConflictException } from "@nestjs/common";
 import { User } from "../entities/user.entity";
 import { UserRepository } from "../repositories/user.repository";
+import { Hasher } from "src/modules/crypto/hasher";
 
 export type CreateUserUseCaseRequest = {
     name: string;
@@ -10,7 +11,8 @@ export type CreateUserUseCaseRequest = {
 
 export class CreateUserUseCase {
     constructor(
-        private usersRepository: UserRepository
+        private usersRepository: UserRepository,
+        private hasher: Hasher
     ) {}
 
     async execute({
@@ -24,7 +26,7 @@ export class CreateUserUseCase {
         const user = User.create({
             name,
             email,
-            password
+            password: await this.hasher.hash(password)
         });
 
         await this.usersRepository.create(user);
