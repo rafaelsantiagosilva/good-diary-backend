@@ -11,13 +11,21 @@ export type NoteProps = {
 }
 
 export class Note extends Entity<NoteProps> {
-    static create(props: Optional<NoteProps, "createdAt">, id?: UniqueEntityId) {
-        const note = new Note({ ...props, createdAt: props.createdAt ?? new Date() }, id);
+    static create(props: Optional<NoteProps, "createdAt" >, id?: UniqueEntityId) {
+        const note = new Note({ ...props, createdAt: props.createdAt ?? new Date() }, id ?? new UniqueEntityId());
         return note;
     }
 
     private touch() {
         this.props.updatedAt = new Date();
+    }
+
+    get id(): string {
+        return this.id.toString();
+    }
+
+    get authorId() {
+        return this.props.authorId.toString();
     }
 
     get title() {
