@@ -1,0 +1,46 @@
+import { ConflictException, UnauthorizedException } from "@nestjs/common";
+import { NoteRepository } from "../repositories/note.repository";
+import { AddNoteUseCase } from "./add-note";
+import { InMemoryUserRepository } from "src/modules/users/repositories/in-memory-user.repository";
+import { InMemoryNoteRepository } from "../repositories/in-memory-note.repository";
+import { User } from "src/modules/users/entities/user.entity";
+
+describe("Add Note Use Case", () => {
+    let inMemoryUserRepository: InMemoryUserRepository;
+    let inMemoryNoteRepository: NoteRepository;
+    let sut: AddNoteUseCase;
+
+    beforeEach(() => {
+        inMemoryUserRepository = new InMemoryUserRepository();
+        inMemoryNoteRepository = new InMemoryNoteRepository();
+        sut = new AddNoteUseCase(inMemoryUserRepository, inMemoryNoteRepository);
+    });
+
+    it("should be able to create a new note", async () => {
+        const user = User.create({
+            name: "John Doe",
+            email: "john.doe@email.com",
+            password: "pass123"
+        });
+
+        await inMemoryUserRepository.create(user);
+
+        await sut.execute({
+            userId: user.id,
+            title: "Creating note use case",
+            description: "Testing the create note use case"
+        });
+
+        expect(inMemoryNoteRepository).toHaveLength(1);
+    });
+
+    it("should not be able to create a new note to a inexisting user", async () => {
+        expect(async () => {
+            await sut.execute({
+                userId: "inexisting-user-id",
+                title: "Creating note use case",
+                description: "Testing the create note use case"
+            });
+        }).rejects.toThrow(UnauthorizedException);
+    });
+})
