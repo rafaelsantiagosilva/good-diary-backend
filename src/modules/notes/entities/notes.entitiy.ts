@@ -20,10 +20,6 @@ export class Note extends Entity<NoteProps> {
         this.props.updatedAt = new Date();
     }
 
-    get id(): string {
-        return this.id.toString();
-    }
-
     get authorId() {
         return this.props.authorId.toString();
     }

@@ -10,7 +10,7 @@ export abstract class Entity<Props> {
     }
 
     get id() {
-        return this.id;
+        return this._id.toString();
     }
 
     public equals(entity: Entity<any>) {

@@ -10,7 +10,7 @@ export class InMemoryNoteRepository implements NoteRepository {
     }
 
     async addUserNote(note: Note): Promise<void> {
-        this.addUserNote(note);
+        this.data.push(note);
     }
     
     async save(note: Note): Promise<void> {

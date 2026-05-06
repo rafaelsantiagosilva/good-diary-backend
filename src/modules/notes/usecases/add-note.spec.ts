@@ -7,7 +7,7 @@ import { User } from "src/modules/users/entities/user.entity";
 
 describe("Add Note Use Case", () => {
     let inMemoryUserRepository: InMemoryUserRepository;
-    let inMemoryNoteRepository: NoteRepository;
+    let inMemoryNoteRepository: InMemoryNoteRepository;
     let sut: AddNoteUseCase;
 
     beforeEach(() => {
@@ -31,7 +31,7 @@ describe("Add Note Use Case", () => {
             description: "Testing the create note use case"
         });
 
-        expect(inMemoryNoteRepository).toHaveLength(1);
+        expect(inMemoryNoteRepository.data).toHaveLength(1);
     });
 
     it("should not be able to create a new note to a inexisting user", async () => {

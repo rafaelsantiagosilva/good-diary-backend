@@ -13,10 +13,6 @@ export class User extends Entity<UserProps> {
         return user;
     }
 
-    get id(): string {
-        return this.id.toString();
-    }
-
     get name() {
         return this.props.name;
     }
