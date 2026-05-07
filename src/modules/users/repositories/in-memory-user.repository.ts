@@ -2,7 +2,7 @@ import { UniqueEntityId } from "src/shared/entities/unique-entity-id";
 import { User } from "../entities/user.entity";
 import { UserRepository } from "./user.repository";
 
-export class InMemoryUserRepository implements UserRepository {
+export class InMemoryUserRepository extends UserRepository {
     data: User[] = [];
     
     async getById(id: UniqueEntityId): Promise<User | null> {
