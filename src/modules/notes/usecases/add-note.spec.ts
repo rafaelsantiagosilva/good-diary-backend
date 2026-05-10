@@ -26,7 +26,7 @@ describe("Add Note Use Case", () => {
         await inMemoryUserRepository.create(user);
 
         await sut.execute({
-            userId: user.id,
+            authorId: user.id,
             title: "Creating note use case",
             description: "Testing the create note use case"
         });
@@ -37,7 +37,7 @@ describe("Add Note Use Case", () => {
     it("should not be able to create a new note to a inexisting user", async () => {
         expect(async () => {
             await sut.execute({
-                userId: "inexisting-user-id",
+                authorId: "inexisting-user-id",
                 title: "Creating note use case",
                 description: "Testing the create note use case"
             });

@@ -25,11 +25,11 @@ export class AddNoteController {
         @Body() { title, description }: AddNoteDto,
         @CurrentUser() user: Payload
     ) {
-        const { sub: userId } = user;
+        const { sub: authorId } = user;
         await this.addNote.execute({
             title,
             description,
-            userId
+            authorId
         });
     }
 }

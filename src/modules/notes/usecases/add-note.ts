@@ -5,7 +5,7 @@ import { Note } from "../entities/notes.entitiy";
 import { NoteRepository } from "../repositories/note.repository";
 
 export type AddNoteUseCaseRequest = {
-    userId: string;
+    authorId: string;
     title: string;
     description: string;
 };
@@ -18,15 +18,15 @@ export class AddNoteUseCase {
     ) { }
 
     async execute({
-        userId, title, description
+        authorId, title, description
     }: AddNoteUseCaseRequest) {
-        const user = await this.userRepository.getById(new UniqueEntityId(userId));
+        const user = await this.userRepository.getById(new UniqueEntityId(authorId));
 
         if (!user)
             throw new UnauthorizedException("Usuário não encontrado.");
 
         const note = Note.create({
-            authorId: new UniqueEntityId(userId),
+            authorId: new UniqueEntityId(authorId),
             title,
             description,
             updatedAt: null
