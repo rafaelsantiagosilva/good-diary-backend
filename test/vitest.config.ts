@@ -7,7 +7,8 @@ export default defineConfig({
         globals: true,
         environment: "node",
         root: "./",
-        include: ["test/**/*.e2e.ts", "test/**/*.test.ts"]
+        include: ["test/**/*.e2e.ts", "test/**/*.test.ts"],
+        fileParallelism: false
     },
     plugins: [
         tsconfigPaths(),
