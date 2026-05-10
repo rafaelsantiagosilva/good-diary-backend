@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserRepository } from "src/modules/users/repositories/user.repository";
 import { UniqueEntityId } from "src/shared/entities/unique-entity-id";
-import { NoteRepository } from "../repositories/note.repository";
 import { Note } from "../entities/notes.entitiy";
+import { NoteRepository } from "../repositories/note.repository";
 
 export type AddNoteUseCaseRequest = {
     userId: string;
@@ -10,12 +10,13 @@ export type AddNoteUseCaseRequest = {
     description: string;
 };
 
+@Injectable()
 export class AddNoteUseCase {
     constructor(
-        private userRepository: UserRepository, 
+        private userRepository: UserRepository,
         private noteRepository: NoteRepository
-    ) {}
-    
+    ) { }
+
     async execute({
         userId, title, description
     }: AddNoteUseCaseRequest) {
