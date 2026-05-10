@@ -3,6 +3,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 import { AppModule } from './app.module';
+import { EnvService } from './modules/env/env.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -28,7 +29,8 @@ async function bootstrap() {
     })
   );
 
-  await app.listen(process.env.PORT ?? 3000, "0.0.0.0");
+  const port = app.get(EnvService).get("PORT");
+  await app.listen(port!, "0.0.0.0");
 }
 
 bootstrap();
