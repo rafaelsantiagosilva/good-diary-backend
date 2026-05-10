@@ -11,6 +11,19 @@ export class PrismaNoteRepository extends NoteRepository {
         super();
     }
 
+    async getById(noteId: string): Promise<Note | null> {
+        const prismaNote = await this.prisma.client.note.findUnique({
+            where: {
+                id: noteId
+            }
+        });
+
+        if (!prismaNote)
+            return null;
+
+        return PrismaNoteMapper.toDomain(prismaNote);
+    }
+
     async getAllUserNotes(user: User): Promise<Note[]> {
         const prismaNotes = await this.prisma.client.note.findMany({
             where: {

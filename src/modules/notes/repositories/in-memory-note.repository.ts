@@ -6,6 +6,10 @@ import { UniqueEntityId } from "src/shared/entities/unique-entity-id";
 export class InMemoryNoteRepository extends NoteRepository {
     data: Note[] = [];
 
+    async getById(noteId: string): Promise<Note | null> {
+        return this.data.find(note => note.id === noteId) ?? null;
+    }
+
     async getAllUserNotes(user: User): Promise<Note[]> {
         return this.data
             .filter(note => note.authorId === user.id.toString())
