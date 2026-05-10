@@ -11,7 +11,7 @@ export type NoteProps = {
 }
 
 export class Note extends Entity<NoteProps> {
-    static create(props: Optional<NoteProps, "createdAt" >, id?: UniqueEntityId) {
+    static create(props: Optional<NoteProps, "createdAt">, id?: UniqueEntityId) {
         const note = new Note({ ...props, createdAt: props.createdAt ?? new Date() }, id ?? new UniqueEntityId());
         return note;
     }
@@ -40,5 +40,13 @@ export class Note extends Entity<NoteProps> {
     set description(description: string) {
         this.props.description = description;
         this.touch();
+    }
+
+    get createdAt() {
+        return this.props.createdAt;
+    }
+
+    get updatedAt() {
+        return this.props.updatedAt;
     }
 }

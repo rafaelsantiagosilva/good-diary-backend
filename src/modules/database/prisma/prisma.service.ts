@@ -10,7 +10,8 @@ export class PrismaService
         super({
             adapter: new PrismaPg({
                 connectionString: process.env.DATABASE_URL
-            })
+            }),
+            log: ["error", "info", "query", "warn"]
         });
     }
 

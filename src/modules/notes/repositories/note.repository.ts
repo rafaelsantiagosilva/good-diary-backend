@@ -1,9 +1,9 @@
 import { User } from "src/modules/users/entities/user.entity";
 import { Note } from "../entities/notes.entitiy";
 
-export interface NoteRepository {
-    getAllUserNotes(user: User): Promise<Note[]>;
-    addUserNote(note: Note): Promise<void>;
-    save(note: Note): Promise<void>;
-    deleteNote(note: Note): Promise<void>;
+export abstract class NoteRepository {
+    abstract getAllUserNotes(user: User): Promise<Note[]>;
+    abstract addUserNote(note: Note): Promise<void>;
+    abstract save(note: Note): Promise<void>;
+    abstract deleteNote(note: Note): Promise<void>;
 }
