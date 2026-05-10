@@ -1,6 +1,6 @@
 import { Note as DomainNote } from "src/modules/notes/entities/notes.entitiy";
 import { UniqueEntityId } from "src/shared/entities/unique-entity-id";
-import { NoteModel as PrismaNote } from "../generated/models";
+import { NoteModel as PrismaNote } from "../generated/models/Note";
 
 export class PrismaNoteMapper {
     static toDomain({ id, createdAt, authorId, ...rest }: PrismaNote): DomainNote {

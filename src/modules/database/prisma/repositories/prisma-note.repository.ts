@@ -10,7 +10,7 @@ export class PrismaNoteRepository extends NoteRepository {
     }
 
     async getAllUserNotes(user: User): Promise<Note[]> {
-        const prismaNotes = await this.prisma.note.findMany({
+        const prismaNotes = await this.prisma.client.note.findMany({
             where: {
                 authorId: user.id
             },
@@ -23,13 +23,13 @@ export class PrismaNoteRepository extends NoteRepository {
     }
 
     async addUserNote(note: Note): Promise<void> {
-        await this.prisma.note.create({
+        await this.prisma.client.note.create({
             data: PrismaNoteMapper.toPrisma(note)
         });
     }
 
     async save(note: Note): Promise<void> {
-        await this.prisma.note.update({
+        await this.prisma.client.note.update({
             data: PrismaNoteMapper.toPrisma(note),
             where: {
                 id: note.id
@@ -38,7 +38,7 @@ export class PrismaNoteRepository extends NoteRepository {
     }
 
     async deleteNote(note: Note): Promise<void> {
-        await this.prisma.note.delete({
+        await this.prisma.client.note.delete({
             where: {
                 id: note.id
             }

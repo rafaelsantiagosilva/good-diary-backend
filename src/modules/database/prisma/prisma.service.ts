@@ -5,10 +5,11 @@ import { PrismaClient } from "./generated/client";
 
 @Injectable()
 export class PrismaService
-    extends PrismaClient
     implements OnModuleInit, OnModuleDestroy {
+    public readonly client: PrismaClient;
+
     constructor(env: EnvService) {
-        super({
+        this.client = new PrismaClient({
             adapter: new PrismaPg({
                 connectionString: env.get("DATABASE_URL")
             }),
@@ -16,11 +17,11 @@ export class PrismaService
         });
     }
 
-    onModuleInit() {
-        this.$connect();
+    async onModuleInit() {
+        await this.client.$connect();
     }
 
-    onModuleDestroy() {
-        this.$disconnect();
+    async onModuleDestroy() {
+        await this.client.$disconnect();
     }
 }

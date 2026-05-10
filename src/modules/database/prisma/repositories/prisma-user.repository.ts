@@ -10,7 +10,7 @@ export class PrismaUserRepository extends UserRepository {
     }
 
     async getById(id: UniqueEntityId): Promise<User | null> {
-        const prismaUser = await this.prisma.user.findUnique({
+        const prismaUser = await this.prisma.client.user.findUnique({
             where: {
                 id: id.toString()
             }
@@ -23,7 +23,7 @@ export class PrismaUserRepository extends UserRepository {
     }
 
     async getByEmail(email: string): Promise<User | null> {
-        const prismaUser = await this.prisma.user.findUnique({
+        const prismaUser = await this.prisma.client.user.findUnique({
             where: {
                 email
             }
@@ -36,7 +36,7 @@ export class PrismaUserRepository extends UserRepository {
     }
 
     async create(user: User): Promise<void> {
-        await this.prisma.user.create({
+        await this.prisma.client.user.create({
             data: PrismaUserMapper.toPrisma(user)
         });
     }
