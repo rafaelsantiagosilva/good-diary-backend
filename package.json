@@ -21,7 +21,7 @@
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
     "test:unit": "vitest run src",
-    "test:e2e": "dotenv -e .env.test -- vitest run --config ./test/vitest-e2e.config.ts"
+    "test:e2e": "dotenv -e .env.test -- vitest run --config ./test/vitest.config.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

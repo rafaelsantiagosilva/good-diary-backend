@@ -3,10 +3,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from "@nestjs/config";
 import { envSchema } from './modules/env/env';
 import { EnvService } from './modules/env/env.service';
+import { CryptoModule } from './modules/crypto/cypto.module';
 
 @Module({
   imports: [
     AuthModule,
+    CryptoModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validate: env => envSchema.parse(env)
