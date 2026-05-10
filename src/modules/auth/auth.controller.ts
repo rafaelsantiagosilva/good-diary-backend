@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { AuthService } from "./auth.service";
@@ -16,7 +16,7 @@ export class AuthController {
 
     @Post()
     @HttpCode(HttpStatus.OK)
-    async handle({ email, password }: LoginDto) {
+    async handle(@Body() { email, password }: LoginDto) {
         const { token } = await this.authService.login(email, password);
         return { token };
     }
