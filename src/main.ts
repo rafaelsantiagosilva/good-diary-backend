@@ -15,7 +15,6 @@ async function bootstrap() {
     .setTitle("Good Diary")
     .setDescription("The Good Diary API documentation.")
     .setVersion("1.0")
-    .addTag("cats")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
