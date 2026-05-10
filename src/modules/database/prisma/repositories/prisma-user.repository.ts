@@ -3,7 +3,9 @@ import { UserRepository } from "src/modules/users/repositories/user.repository";
 import { UniqueEntityId } from "src/shared/entities/unique-entity-id";
 import { PrismaUserMapper } from "../mappers/prisma-user.mapper";
 import { PrismaService } from "../prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaUserRepository extends UserRepository {
     constructor(private prisma: PrismaService) {
         super();

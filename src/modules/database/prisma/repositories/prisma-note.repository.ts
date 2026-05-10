@@ -3,7 +3,9 @@ import { NoteRepository } from "src/modules/notes/repositories/note.repository";
 import { User } from "src/modules/users/entities/user.entity";
 import { PrismaNoteMapper } from "../mappers/prisma-note.mapper";
 import { PrismaService } from "../prisma.service";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class PrismaNoteRepository extends NoteRepository {
     constructor(private prisma: PrismaService) {
         super();
