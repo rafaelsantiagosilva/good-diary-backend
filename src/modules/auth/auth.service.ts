@@ -6,7 +6,11 @@ import { Payload } from "./types/payload";
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService: JwtService, private hasher: Hasher, private userRepository: UserRepository) { }
+    constructor(
+        private jwtService: JwtService,
+        private hasher: Hasher,
+        private userRepository: UserRepository
+    ) { }
 
     async login(email: string, password: string) {
         const user = await this.userRepository.getByEmail(email);

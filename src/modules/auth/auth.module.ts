@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { PassportModule } from "@nestjs/passport";
 import { CryptoModule } from "../crypto/cypto.module";
+import { DatabaseModule } from "../database/database.module";
 import { EnvModule } from "../env/env.module";
 import { EnvService } from "../env/env.service";
 import { AuthController } from "./auth.controller";
@@ -22,13 +23,14 @@ import { JwtStrategy } from "./jwt.strategy";
                 }
             }
         }),
-        CryptoModule
+        CryptoModule,
+        EnvModule,
+        DatabaseModule
     ],
     controllers: [AuthController],
     providers: [
         AuthService,
         JwtStrategy,
-        EnvService
     ]
 })
 export class AuthModule { }
