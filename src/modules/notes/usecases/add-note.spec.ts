@@ -1,9 +1,8 @@
-import { ConflictException, UnauthorizedException } from "@nestjs/common";
-import { NoteRepository } from "../repositories/note.repository";
-import { AddNoteUseCase } from "./add-note";
+import { UnauthorizedException } from "@nestjs/common";
+import { User } from "src/modules/users/entities/user.entity";
 import { InMemoryUserRepository } from "src/modules/users/repositories/in-memory-user.repository";
 import { InMemoryNoteRepository } from "../repositories/in-memory-note.repository";
-import { User } from "src/modules/users/entities/user.entity";
+import { AddNoteUseCase } from "./add-note";
 
 describe("Add Note Use Case", () => {
     let inMemoryUserRepository: InMemoryUserRepository;

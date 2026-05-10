@@ -8,7 +8,7 @@ import { NoteFactory } from "test/factories/note.factory";
 import { UserFactory } from "test/factories/user.factory";
 import { resetDatabase } from "test/utils/prisma-reset";
 
-describe("AddNoteController (E2E) [POST /note]", () => {
+describe("FetchUserNotesController (E2E) [GET /user/notes]", () => {
     let app: INestApplication;
     let jwtService: JwtService;
     let prisma: PrismaService;
@@ -33,7 +33,7 @@ describe("AddNoteController (E2E) [POST /note]", () => {
         await app.close();
     });
 
-    it("should be able to add a new note", async () => {
+    it("should be able to fetch the user notes", async () => {
         const { id: authorId, name, email, password } = UserFactory.makeDomainUser();
         await prisma.client.user.create({
             data: {
@@ -51,30 +51,42 @@ describe("AddNoteController (E2E) [POST /note]", () => {
 
         const { title, description } = NoteFactory.makeDomainNote(authorId);
 
-        const response = await request(app.getHttpServer())
-            .post("/note")
-            .set("Authorization", `Bearer ${token}`)
-            .send({
+        await prisma.client.note.create({
+            data: {
                 title,
-                description
-            });
+                description,
+                authorId
+            }
+        });
 
-        expect(response.status).toBe(HttpStatus.CREATED);
+        await prisma.client.note.create({
+            data: {
+                title,
+                description,
+                authorId
+            }
+        });
 
-        const wasNoteInDatabase = await prisma.client.note.findFirst({
+        const response = await request(app.getHttpServer())
+            .get("/user/notes")
+            .set("Authorization", `Bearer ${token}`);
+
+        expect(response.status).toBe(HttpStatus.OK);
+
+        const notes = await prisma.client.note.findMany({
             where: {
                 authorId: authorId
             }
         });
 
-        expect(wasNoteInDatabase).toBeTruthy();
-        expect(wasNoteInDatabase!.title).toBe(title);
+        expect(notes).toHaveLength(2);
     });
 
-    it("should not be able to add a new note without a token", async () => {
+    it("should not be able to fetch the user notes without a token", async () => {
         const { id: authorId, name, email, password } = UserFactory.makeDomainUser();
         await prisma.client.user.create({
             data: {
+                id: authorId,
                 name,
                 email,
                 password
@@ -83,33 +95,24 @@ describe("AddNoteController (E2E) [POST /note]", () => {
 
         const { title, description } = NoteFactory.makeDomainNote(authorId);
 
-        const response = await request(app.getHttpServer())
-            .post("/note")
-            .send({
+        await prisma.client.note.create({
+            data: {
                 title,
-                description
-            });
-
-        expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
-    });
-
-    it("should not be able to add a new note to a inexisting user", async () => {
-        const { id: authorId, email } = UserFactory.makeDomainUser();
-
-        const token = jwtService.sign({
-            sub: authorId,
-            email: email
+                description,
+                authorId
+            }
         });
 
-        const { title, description } = NoteFactory.makeDomainNote(authorId);
+        await prisma.client.note.create({
+            data: {
+                title,
+                description,
+                authorId
+            }
+        });
 
         const response = await request(app.getHttpServer())
-            .post("/note")
-            .set("Authorization", `Bearer ${token}`)
-            .send({
-                title,
-                description
-            });
+            .get("/user/notes");
 
         expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
