@@ -1,11 +1,11 @@
 import { Body, Controller, HttpCode, HttpStatus, Param, Put } from "@nestjs/common";
+import { ApiBadRequestResponse, ApiNoContentResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { createZodDto } from "nestjs-zod";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import type { Payload } from "src/shared/auth/types/payload";
 import { z } from "zod";
 import { UpdateNoteUseCase } from "../usecases/update-note";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 const UpdateNoteSchema = z.object({
     title: z.string().nonempty({
@@ -28,6 +28,9 @@ export class UpdateNoteController {
         summary: "Rota para edição de uma nota.",
         description: "Rota com funcionalidade de editar uma nota de um usuário autenticado, com base no ID da nota."
     })
+    @ApiNoContentResponse({ description: "Nota editada com sucesso." })
+    @ApiBadRequestResponse({ description: "Dados inválidos." })
+    @ApiUnauthorizedResponse({ description: "Falta de autenticação e/ou autenticação incorreta." })
     async handle(
         @Param("id") noteId: string,
         @Body() { title, description }: UpdateNoteDto,

@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { createZodDto } from "nestjs-zod";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
@@ -27,6 +27,9 @@ export class AddNoteController {
         summary: "Rota de criação de nota.",
         description: "Rota feita para criar uma nota, com título e descrição (esta pode estar vazia) para um usuário autenticado.",
     })
+    @ApiCreatedResponse({ description: "Nota criada com sucesso." })
+    @ApiBadRequestResponse({ description: "Dados inválidos." })
+    @ApiUnauthorizedResponse({ description: "Falta de autenticação e/ou autenticação incorreta." })
     async handle(
         @Body() { title, description }: AddNoteDto,
         @CurrentUser() user: Payload

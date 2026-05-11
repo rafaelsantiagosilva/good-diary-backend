@@ -2,7 +2,7 @@ import { Body, Controller, Post } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { CreateUserUseCase } from "../usecases/create-user";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
 const CreateUserSchema = z.object({
     name: z.string().nonempty(),
@@ -26,6 +26,8 @@ export class CreateUserController {
         summary: "Rota de criação de usuário.",
         description: "Rota feita para criar um usuário com base em seu nome, e-mail e senha."
     })
+    @ApiCreatedResponse({ description: "Usuário criado com sucesso." })
+    @ApiBadRequestResponse({ description: "Dados enviados são inválidos." })
     async handle(@Body() { name, email, password }: CreateUserDto) {
         await this.createUser.execute({
             name,
