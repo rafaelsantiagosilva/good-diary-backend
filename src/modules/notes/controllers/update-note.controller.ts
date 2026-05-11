@@ -5,7 +5,7 @@ import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import type { Payload } from "src/shared/auth/types/payload";
 import { z } from "zod";
 import { UpdateNoteUseCase } from "../usecases/update-note";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 const UpdateNoteSchema = z.object({
     title: z.string().nonempty({
@@ -24,6 +24,10 @@ export class UpdateNoteController {
 
     @Put("/note/:id")
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiOperation({
+        summary: "Rota para edição de uma nota.",
+        description: "Rota com funcionalidade de editar uma nota de um usuário autenticado, com base no ID da nota."
+    })
     async handle(
         @Param("id") noteId: string,
         @Body() { title, description }: UpdateNoteDto,

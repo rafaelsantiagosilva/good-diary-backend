@@ -2,7 +2,7 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { AuthService } from "./auth.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 const LoginSchema = z.object({
     email: z.email(),
@@ -18,6 +18,10 @@ export class AuthController {
 
     @Post()
     @HttpCode(HttpStatus.OK)
+    @ApiOperation({
+        summary: "Rota de login.",
+        description: "Rota feita para retornar um token JWT. O login é feito a partir do e-mail e senha do usuário.",
+    })
     async handle(@Body() { email, password }: LoginDto) {
         const { token } = await this.authService.login(email, password);
         return { token };

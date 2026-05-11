@@ -1,5 +1,5 @@
 import { Controller, Delete, HttpCode, HttpStatus, Param } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import type { Payload } from "src/shared/auth/types/payload";
@@ -13,6 +13,10 @@ export class DeleteNoteController {
 
     @Delete("/note/:id")
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiOperation({
+        summary: "Rota para deletar uma nota.",
+        description: "Rota com a funcionalidade de deletar uma nota, com base em seu ID, de um usuário autenticado."
+    })
     async handle(
         @Param("id") noteId: string,
         @CurrentUser() user: Payload

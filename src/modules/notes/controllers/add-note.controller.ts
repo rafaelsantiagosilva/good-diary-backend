@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { createZodDto } from "nestjs-zod";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
@@ -23,6 +23,10 @@ export class AddNoteController {
     constructor(private addNote: AddNoteUseCase) { }
 
     @Post("/note")
+    @ApiOperation({
+        summary: "Rota de criação de nota.",
+        description: "Rota feita para criar uma nota, com título e descrição (esta pode estar vazia) para um usuário autenticado.",
+    })
     async handle(
         @Body() { title, description }: AddNoteDto,
         @CurrentUser() user: Payload

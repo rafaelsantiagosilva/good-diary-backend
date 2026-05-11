@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import { type Payload } from "src/shared/auth/types/payload";
@@ -13,6 +13,10 @@ export class FetchUserNotesContoller {
     constructor(private fetchUserNotes: FetchUserNotesUseCase) { }
 
     @Get("/notes")
+    @ApiOperation({
+        summary: "Rota para pegar todas as notas de um usuário.",
+        description: "Rota com funcionalidade de buscar todas as notas de um usuário autenticado, ordenadas em data de criação (`desc`)"
+    })
     async handle(@CurrentUser() user: Payload) {
         const notes = await this.fetchUserNotes.execute({
             authorId: user.sub
