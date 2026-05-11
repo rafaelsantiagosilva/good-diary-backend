@@ -3,6 +3,7 @@ import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import { type Payload } from "src/shared/auth/types/payload";
 import { FetchUserNotesUseCase } from "../usecases/fetch-user-notes";
+import { NoteHttpPresenter } from "../presenters/note-http.presenter";
 
 @Controller("/user")
 @RequireAuth()
@@ -15,6 +16,6 @@ export class FetchUserNotesContoller {
             authorId: user.sub
         });
 
-        return { notes };
+        return { notes: notes.map(note => NoteHttpPresenter.toHttp(note)) };
     }
 }
