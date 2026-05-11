@@ -44,7 +44,8 @@ DATABASE_URL="postgresql://docker:docker@localhost:5432/good_diary_db?schema=pub
 ## Rotas da Aplicação 🪧
 
 ### Auth
-* **[POST]** `/auth` - Realiza o login e retorna o token JWT.
+#### **[POST]** `/auth`
+Realiza o login e retorna o token JWT.
 
 ### User
 
@@ -62,7 +63,7 @@ Retorna todas as notas do usuário logado.
 Edita uma nota existente com base no ID.
 
 #### **[DELETE]** `/note/{id}`
- Remove uma nota do sistema com base no ID.
+Remove uma nota do sistema com base no ID.
 
 ## Comandos ⌨️
 
