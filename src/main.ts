@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { AppModule } from './app.module';
 import { EnvService } from './modules/env/env.service';
 
@@ -11,6 +12,10 @@ async function bootstrap() {
     new FastifyAdapter({ logger: true })
   );
 
+  // Zod config
+  app.useGlobalPipes(new ZodValidationPipe());
+
+  // Scalar config
   const config = new DocumentBuilder()
     .setTitle("Good Diary")
     .setDescription("The Good Diary API documentation.")
