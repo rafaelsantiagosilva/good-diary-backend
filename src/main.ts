@@ -18,8 +18,11 @@ async function bootstrap() {
   // Scalar config
   const config = new DocumentBuilder()
     .setTitle("Good Diary")
-    .setDescription("The Good Diary API documentation.")
+    .setDescription("Documentação da API do Good Diary.")
     .setVersion("1.0")
+    .addTag("Auth", "Rotas envolvendo a autenticação do usuário.")
+    .addTag("User", "Rotas envolvendo a manipulação de entidades e registros de usuários.")
+    .addTag("Note", "Rotas envolvendo a manipulação de entidades e registros de notas, criados por usuários.")
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
