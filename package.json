@@ -16,12 +16,13 @@
     "prisma:migrate": "pnpx prisma migrate dev",
     "prisma:generate": "pnpx prisma generate",
     "prisma:migrate:test": "dotenv -e .env.test -- npx prisma migrate deploy",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run src",
+    "test:watch": "vitest src",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
-    "test:unit": "vitest run src",
-    "test:e2e": "dotenv -e .env.test -- vitest run --config ./test/vitest.config.ts"
+    "test:e2e": "dotenv -e .env.test -- vitest run --config ./test/vitest.config.ts",
+    "test:e2e:watch": "dotenv -e .env.test -- vitest --config ./test/vitest.config.ts",
+    "test:all": "pnpm test && pnpm test:e2e"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
