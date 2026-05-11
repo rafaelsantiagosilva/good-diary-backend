@@ -1,10 +1,11 @@
 import { Body, Controller, Post } from "@nestjs/common";
+import { ApiTags } from "@nestjs/swagger";
+import { createZodDto } from "nestjs-zod";
 import { CurrentUser } from "src/shared/auth/current-user.decorator";
 import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import { type Payload } from "src/shared/auth/types/payload";
-import { AddNoteUseCase } from "../usecases/add-note";
 import { z } from "zod";
-import { createZodDto } from "nestjs-zod";
+import { AddNoteUseCase } from "../usecases/add-note";
 
 const AddNoteSchema = z.object({
     title: z.string().nonempty({
@@ -17,6 +18,7 @@ class AddNoteDto extends createZodDto(AddNoteSchema) { }
 
 @Controller()
 @RequireAuth()
+@ApiTags("Note")
 export class AddNoteController {
     constructor(private addNote: AddNoteUseCase) { }
 

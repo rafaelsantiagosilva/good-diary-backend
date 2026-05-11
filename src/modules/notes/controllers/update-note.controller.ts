@@ -5,6 +5,7 @@ import { RequireAuth } from "src/shared/auth/require-auth.decorator";
 import type { Payload } from "src/shared/auth/types/payload";
 import { z } from "zod";
 import { UpdateNoteUseCase } from "../usecases/update-note";
+import { ApiTags } from "@nestjs/swagger";
 
 const UpdateNoteSchema = z.object({
     title: z.string().nonempty({
@@ -17,6 +18,7 @@ class UpdateNoteDto extends createZodDto(UpdateNoteSchema) { }
 
 @Controller()
 @RequireAuth()
+@ApiTags("Note")
 export class UpdateNoteController {
     constructor(private updateNote: UpdateNoteUseCase) { }
 

@@ -2,6 +2,7 @@ import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { AuthService } from "./auth.service";
+import { ApiTags } from "@nestjs/swagger";
 
 const LoginSchema = z.object({
     email: z.email(),
@@ -11,6 +12,7 @@ const LoginSchema = z.object({
 class LoginDto extends createZodDto(LoginSchema) { }
 
 @Controller("/auth")
+@ApiTags("Auth")
 export class AuthController {
     constructor(private authService: AuthService) { }
 

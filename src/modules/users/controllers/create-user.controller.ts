@@ -2,6 +2,7 @@ import { Body, Controller, Post } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { CreateUserUseCase } from "../usecases/create-user";
+import { ApiTags } from "@nestjs/swagger";
 
 const CreateUserSchema = z.object({
     name: z.string().nonempty(),
@@ -16,6 +17,7 @@ const CreateUserSchema = z.object({
 class CreateUserDto extends createZodDto(CreateUserSchema) { }
 
 @Controller("/user")
+@ApiTags("User")
 export class CreateUserController {
     constructor(private createUser: CreateUserUseCase) { }
 
