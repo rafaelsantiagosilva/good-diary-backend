@@ -1,4 +1,4 @@
-<center><h1> 📓 Good Diary API ⚙️</h1></center>
+<div align="center"><h1> 📓 Good Diary API ⚙️</h1></div>
 
 A API do **Good Diary** consiste em uma API Restful, responsável por fornecer rotas de autenticação e manipulação - CRUD (Create, Read, Update, Delete) - de entidades (usuários e suas notas).
 
@@ -111,4 +111,4 @@ pnpm test:e2e
 pnpm test:all
 ```
 
-<center><small>🦇 Feito com 💜</small></center>
+<div align="center"><span style="font-size: 0.7em;">🦇 Feito com 💜</span></div>
