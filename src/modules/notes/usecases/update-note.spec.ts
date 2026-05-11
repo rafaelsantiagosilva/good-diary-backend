@@ -1,4 +1,4 @@
-import { UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { InMemoryUserRepository } from "src/modules/users/repositories/in-memory-user.repository";
 import { NoteFactory } from "test/factories/note.factory";
 import { UserFactory } from "test/factories/user.factory";
@@ -46,7 +46,7 @@ describe("Update Note Use Case", () => {
                 authorId: user.id,
                 note: note
             });
-        }).rejects.toThrow(UnauthorizedException);
+        }).rejects.toThrow(BadRequestException);
     });
 
     it("should not be able to update a note from another user", async () => {

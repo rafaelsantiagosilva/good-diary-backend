@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { UserRepository } from "src/modules/users/repositories/user.repository";
 import { Note } from "../entities/notes.entitiy";
 import { NoteRepository } from "../repositories/note.repository";
@@ -18,10 +18,12 @@ export class UpdateNoteUseCase {
 
     async execute({ authorId, note }: UpdateNoteUseCaseRequest) {
         const author = await this.userRepository.getById(new UniqueEntityId(authorId));
-        console.log({ noteId: note.id });
         const noteInDatabase = await this.noteRepository.getById(note.id);
 
-        if (!author || !noteInDatabase || noteInDatabase.authorId !== author.id)
+        if (!noteInDatabase)
+            throw new BadRequestException("Essa nota não existe.");
+
+        if (!author || noteInDatabase.authorId !== author.id)
             throw new UnauthorizedException();
 
         noteInDatabase.title = note.title;
