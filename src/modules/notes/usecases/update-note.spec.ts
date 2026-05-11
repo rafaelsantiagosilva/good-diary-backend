@@ -4,16 +4,23 @@ import { NoteFactory } from "test/factories/note.factory";
 import { UserFactory } from "test/factories/user.factory";
 import { InMemoryNoteRepository } from "../repositories/in-memory-note.repository";
 import { UpdateNoteUseCase } from "./update-note";
+import { StubCrypter } from "src/modules/crypto/stub/stub-crypter";
 
 describe("Update Note Use Case", () => {
     let inMemoryUserRepository: InMemoryUserRepository;
     let inMemoryNoteRepository: InMemoryNoteRepository;
+    let stubCrypter: StubCrypter;
     let sut: UpdateNoteUseCase;
 
     beforeEach(() => {
         inMemoryUserRepository = new InMemoryUserRepository();
         inMemoryNoteRepository = new InMemoryNoteRepository();
-        sut = new UpdateNoteUseCase(inMemoryUserRepository, inMemoryNoteRepository);
+        stubCrypter = new StubCrypter();
+        sut = new UpdateNoteUseCase(
+            inMemoryUserRepository,
+            inMemoryNoteRepository,
+            stubCrypter
+        );
     });
 
     it("should be to update a note", async () => {

@@ -3,16 +3,23 @@ import { User } from "src/modules/users/entities/user.entity";
 import { InMemoryUserRepository } from "src/modules/users/repositories/in-memory-user.repository";
 import { InMemoryNoteRepository } from "../repositories/in-memory-note.repository";
 import { AddNoteUseCase } from "./add-note";
+import { StubCrypter } from "src/modules/crypto/stub/stub-crypter";
 
 describe("Add Note Use Case", () => {
     let inMemoryUserRepository: InMemoryUserRepository;
     let inMemoryNoteRepository: InMemoryNoteRepository;
+    let stubCrypter: StubCrypter;
     let sut: AddNoteUseCase;
 
     beforeEach(() => {
         inMemoryUserRepository = new InMemoryUserRepository();
         inMemoryNoteRepository = new InMemoryNoteRepository();
-        sut = new AddNoteUseCase(inMemoryUserRepository, inMemoryNoteRepository);
+        stubCrypter = new StubCrypter();
+        sut = new AddNoteUseCase(
+            inMemoryUserRepository,
+            inMemoryNoteRepository,
+            stubCrypter
+        );
     });
 
     it("should be able to create a new note", async () => {

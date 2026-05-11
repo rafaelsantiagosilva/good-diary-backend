@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { CryptoModule } from "../crypto/cypto.module";
 import { DatabaseModule } from "../database/database.module";
 import { AddNoteController } from "./controllers/add-note.controller";
 import { DeleteNoteController } from "./controllers/delete-note.controller";
@@ -11,7 +12,8 @@ import { UpdateNoteUseCase } from "./usecases/update-note";
 
 @Module({
     imports: [
-        DatabaseModule
+        DatabaseModule,
+        CryptoModule
     ],
     controllers: [
         AddNoteController,

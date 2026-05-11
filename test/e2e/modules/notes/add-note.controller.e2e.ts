@@ -2,6 +2,8 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import { Crypter } from "src/modules/crypto/crypter";
+import { NoteCrypter } from "src/modules/crypto/note/note-crypter";
 import { PrismaService } from "src/modules/database/prisma/prisma.service";
 import request from "supertest";
 import { NoteFactory } from "test/factories/note.factory";
@@ -11,6 +13,7 @@ import { resetDatabase } from "test/utils/prisma-reset";
 describe("AddNoteController (E2E) [POST /note]", () => {
     let app: INestApplication;
     let jwtService: JwtService;
+    let noteCrypter: NoteCrypter;
     let prisma: PrismaService;
 
     beforeAll(async () => {
@@ -22,6 +25,7 @@ describe("AddNoteController (E2E) [POST /note]", () => {
         await app.init();
 
         jwtService = app.get<JwtService>(JwtService);
+        noteCrypter = app.get<NoteCrypter>(Crypter);
         prisma = app.get<PrismaService>(PrismaService);
     });
 
@@ -68,7 +72,7 @@ describe("AddNoteController (E2E) [POST /note]", () => {
         });
 
         expect(wasNoteInDatabase).toBeTruthy();
-        expect(wasNoteInDatabase!.title).toBe(title);
+        expect(noteCrypter.decrypt(wasNoteInDatabase!.title, authorId)).toBe((title));
     });
 
     it("should not be able to add a new note without a token", async () => {

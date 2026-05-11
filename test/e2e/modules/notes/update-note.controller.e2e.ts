@@ -2,6 +2,8 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import { Crypter } from "src/modules/crypto/crypter";
+import { NoteCrypter } from "src/modules/crypto/note/note-crypter";
 import { PrismaService } from "src/modules/database/prisma/prisma.service";
 import request from "supertest";
 import { NoteFactory } from "test/factories/note.factory";
@@ -11,6 +13,7 @@ import { resetDatabase } from "test/utils/prisma-reset";
 describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
     let app: INestApplication;
     let jwtService: JwtService;
+    let noteCrypter: NoteCrypter;
     let prisma: PrismaService;
 
     beforeAll(async () => {
@@ -22,6 +25,7 @@ describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
         await app.init();
 
         jwtService = app.get<JwtService>(JwtService);
+        noteCrypter = app.get<NoteCrypter>(Crypter);
         prisma = app.get<PrismaService>(PrismaService);
     });
 
@@ -53,8 +57,8 @@ describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
         await prisma.client.note.create({
             data: {
                 id,
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(title, authorId),
                 authorId,
                 updatedAt
             }
@@ -77,7 +81,7 @@ describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
         });
 
         expect(wasNoteInDatabase).toBeTruthy();
-        expect(wasNoteInDatabase!.title).toBe("A new title");
+        expect(noteCrypter.decrypt(wasNoteInDatabase!.title, authorId)).toBe("A new title");
     });
 
     it("should not be able to update a note without a token", async () => {
@@ -95,8 +99,8 @@ describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
         await prisma.client.note.create({
             data: {
                 id,
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(title, authorId),
                 authorId,
                 updatedAt
             }
@@ -147,8 +151,8 @@ describe("UpdateNoteController (E2E) [PUT /note/:id]", () => {
         await prisma.client.note.create({
             data: {
                 id,
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(title, authorId),
                 authorId,
                 updatedAt
             }

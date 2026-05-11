@@ -2,6 +2,8 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import { Crypter } from "src/modules/crypto/crypter";
+import { NoteCrypter } from "src/modules/crypto/note/note-crypter";
 import { PrismaService } from "src/modules/database/prisma/prisma.service";
 import request from "supertest";
 import { NoteFactory } from "test/factories/note.factory";
@@ -11,6 +13,7 @@ import { resetDatabase } from "test/utils/prisma-reset";
 describe("FetchUserNotesController (E2E) [GET /user/notes]", () => {
     let app: INestApplication;
     let jwtService: JwtService;
+    let noteCrypter: NoteCrypter;
     let prisma: PrismaService;
 
     beforeAll(async () => {
@@ -22,6 +25,7 @@ describe("FetchUserNotesController (E2E) [GET /user/notes]", () => {
         await app.init();
 
         jwtService = app.get<JwtService>(JwtService);
+        noteCrypter = app.get<NoteCrypter>(Crypter);
         prisma = app.get<PrismaService>(PrismaService);
     });
 
@@ -53,16 +57,16 @@ describe("FetchUserNotesController (E2E) [GET /user/notes]", () => {
 
         await prisma.client.note.create({
             data: {
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(description, authorId),
                 authorId
             }
         });
 
         await prisma.client.note.create({
             data: {
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(description, authorId),
                 authorId
             }
         });
@@ -97,16 +101,16 @@ describe("FetchUserNotesController (E2E) [GET /user/notes]", () => {
 
         await prisma.client.note.create({
             data: {
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(description, authorId),
                 authorId
             }
         });
 
         await prisma.client.note.create({
             data: {
-                title,
-                description,
+                title: noteCrypter.encrypt(title, authorId),
+                description: noteCrypter.encrypt(description, authorId),
                 authorId
             }
         });
