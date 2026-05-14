@@ -27,6 +27,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
 
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get("/openapi.json", (req, res) => {
+    res.send(document);
+  });
+
   app.use(
     "/reference",
     apiReference({
