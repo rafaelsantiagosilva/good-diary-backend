@@ -16,7 +16,7 @@ class FetchUserNotesResponseDto extends createZodDto(
             title: z.string().describe("Título da nota"),
             description: z.string().describe("Descrição/corpo da nota."),
             createdAt: z.iso.datetime().describe("Quando a nota foi criada."),
-            updatedAt: z.iso.datetime().nullable().describe("Última vez que a nota foi editada.")
+            updatedAt: z.iso.datetime().optional().describe("Última vez que a nota foi editada.")
         }))
     })
 ) { }
